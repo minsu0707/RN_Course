@@ -1,32 +1,63 @@
-import { Button, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function App() {
+  const [enteredGaolText, setEnteredGaolText] = useState("");
+  const [courseGoals, setCourseGoals] = useState([]);
+
+  function goalInputHandler(enteredText) {
+    setEnteredGaolText(enteredText);
+  }
+
+  function addGoalHandler() {
+    setCourseGoals((currentCourseGoals) => [
+      ...currentCourseGoals,
+      enteredGaolText,
+    ]);
+  }
+
   return (
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.dummyText}>another peace of text!</Text>
+    <View style={style.appContainer}>
+      <View style={style.inputContainer}>
+        <TextInput
+          style={style.textInput}
+          placeholder="Your course goal!"
+          onChangeText={goalInputHandler}
+        />
+        <Button title="Add Gaol" onPress={addGoalHandler} />
       </View>
-      <Text
-        style={{ margin: 16, borderWidth: 2, borderColor: "red", padding: 16 }}
-      >
-        Hello world
-      </Text>
-      <Button title="Tap me!" />
+      <View style={style.goalsContainer}>
+        {courseGoals.map((goal) => (
+          <Text key={goal}>{goal}</Text>
+        ))}
+      </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
+const style = StyleSheet.create({
+  appContainer: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    paddingTop: 50,
+    paddingHorizontal: 16,
   },
-  dummyText: {
-    margin: 16,
-    padding: 16,
-    borderWidth: 2,
-    borderColor: "blue",
+  inputContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: "#cccccc",
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: "#cccccc",
+    width: "70%",
+    marginRight: 8,
+    padding: 8,
+  },
+  goalsContainer: {
+    flex: 5,
   },
 });
